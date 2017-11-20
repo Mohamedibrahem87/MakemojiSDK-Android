@@ -33,6 +33,7 @@ public class GifSpan extends MojiSpan implements GifConsumer {
     BitmapFactory.Options options;
     Bitmap bitmap;
     BitmapDrawable bitmapDrawable= new BitmapDrawable();
+    static Paint gifPaint = new Paint();
     public static boolean USE_SMALL_GIFS = false;
     public boolean isSmallGif = USE_SMALL_GIFS;
     /**
@@ -218,7 +219,7 @@ public class GifSpan extends MojiSpan implements GifConsumer {
         }
 
         canvas.translate(x, transY);
-        if (d.getBitmap()!=null) canvas.drawBitmap(((BitmapDrawable)d).getBitmap(),null,size,paint);
+        if (d.getBitmap()!=null) canvas.drawBitmap(((BitmapDrawable)d).getBitmap(),null,size,gifPaint);
         else
         d.draw(canvas);
         //if (bitmap!=null)canvas.drawBitmap(bitmap,0,0,paint);
