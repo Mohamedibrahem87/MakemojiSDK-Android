@@ -839,14 +839,15 @@ public class MojiInputLayout extends LinearLayout implements
     }
     public static void onSaveInputToRecentAndsBackend(final CharSequence cs){
         final SpannableStringBuilder ssb = new SpannableStringBuilder(cs);
+
+        MojiSpan [] spans = ssb.getSpans(0,ssb.length(),MojiSpan.class);
+        for (int i = 0; i< spans.length; i++){
+            MojiModel model = spans[i].model;
+            RecentPopulator.addRecent(model);
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {
-                MojiSpan [] spans = ssb.getSpans(0,ssb.length(),MojiSpan.class);
-                for (int i = 0; i< spans.length; i++){
-                    MojiModel model = spans[i].model;
-                    RecentPopulator.addRecent(model);
-                }
                 List<Integer> removals = new ArrayList<>();
                 for (int i = ssb.length()-1;i>=0;i--){
                     if (!keepCharForAnalytics(ssb.charAt(i))) {

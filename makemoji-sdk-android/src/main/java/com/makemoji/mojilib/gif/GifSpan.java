@@ -56,6 +56,9 @@ public class GifSpan extends MojiSpan implements GifConsumer {
         mWidth = (int) (w * Moji.density *BASE_SIZE_MULT * mFontRatio);
         mHeight = (int) (h * Moji.density * BASE_SIZE_MULT * mFontRatio);
 
+        if (mHeight>210){
+            Log.d("trouble","trouble");
+        }
         mDrawable = d;
         mPlaceHolder = d;
         mSource = source;
@@ -71,8 +74,8 @@ public class GifSpan extends MojiSpan implements GifConsumer {
         producer = GifProducer.getProducerAndSub(this, null, mSource);
         if (producer != null) {
             if (!USE_SMALL_GIFS && !isSmallGif) {
-                mWidth = Math.min(mWidth, producer.getWidth());
-                mHeight = Math.min(mHeight, producer.getHeight());
+                //mWidth = Math.min(mWidth, producer.getWidth());
+                //mHeight = Math.min(mHeight, producer.getHeight());
             }
             return;
         }
@@ -90,8 +93,8 @@ public class GifSpan extends MojiSpan implements GifConsumer {
                             GifProducer.getProducerAndSub(GifSpan.this, buffer, mSource);
                             if (producer != null) {
                                 if (!USE_SMALL_GIFS && !isSmallGif) {
-                                    mWidth = Math.max(mWidth, producer.getWidth());
-                                    mHeight = Math.max(mHeight, producer.getHeight());
+                                   // mWidth = Math.max(mWidth, producer.getWidth());
+                                   // mHeight = Math.max(mHeight, producer.getHeight());
                                 }
                             }
                         } catch (Exception e) {
@@ -113,8 +116,8 @@ public class GifSpan extends MojiSpan implements GifConsumer {
                         response.body().close();
                         if (producer != null) {
                             if (!USE_SMALL_GIFS && !isSmallGif) {
-                                mWidth = Math.max(mWidth, producer.getWidth());
-                                mHeight = Math.max(mHeight, producer.getHeight());
+                               // mWidth = Math.max(mWidth, producer.getWidth());
+                               // mHeight = Math.max(mHeight, producer.getHeight());
                             }
                         }
                     }
@@ -142,7 +145,7 @@ public class GifSpan extends MojiSpan implements GifConsumer {
         if (isSmallGif)
             bitmapDrawable.setBounds(0,0,mWidth,mHeight);
         else
-            bitmapDrawable.setBounds(0,0,b.getWidth(),b.getHeight());
+            bitmapDrawable.setBounds(0,0,(int)(mWidth * sizeMultiplier),(int)(mHeight * sizeMultiplier));
         if (lastInvalidated+15>now) return;
         Boolean gifInvalidated = (Boolean) v.getTag(R.id._makemoji_gif_invalidated_id);
         if (gifInvalidated==null || !gifInvalidated) {
@@ -182,6 +185,7 @@ public class GifSpan extends MojiSpan implements GifConsumer {
         rect.right = (int)(mWidth *sizeMultiplier);
 
 
+
         if (fm != null) {
             fm.ascent = -rect.bottom;
             fm.descent = 0;
@@ -189,6 +193,7 @@ public class GifSpan extends MojiSpan implements GifConsumer {
             fm.top = fm.ascent;
             fm.bottom = 0;
         }
+        Log.i("gif span","gif span size "+ rect.right);
 
         //return 100;
         return rect.right;
@@ -198,8 +203,9 @@ public class GifSpan extends MojiSpan implements GifConsumer {
     public void draw(Canvas canvas, CharSequence text,
                      int start, int end, float x,
                      int top, int y, int bottom, Paint paint) {
-        Drawable d = bitmapDrawable;
+        BitmapDrawable d = bitmapDrawable;
         d.setBounds(0,0,(int)(mWidth * sizeMultiplier),(int)(mHeight * sizeMultiplier));
+        Rect size = new Rect(0,0,(int)(mWidth * sizeMultiplier),(int)(mHeight * sizeMultiplier));
         canvas.save();
         //save bounds before applying animation scale. for a size pulse only
         //int oldRight = d.getBounds().right;
@@ -212,6 +218,8 @@ public class GifSpan extends MojiSpan implements GifConsumer {
         }
 
         canvas.translate(x, transY);
+        if (d.getBitmap()!=null) canvas.drawBitmap(((BitmapDrawable)d).getBitmap(),null,size,paint);
+        else
         d.draw(canvas);
         //if (bitmap!=null)canvas.drawBitmap(bitmap,0,0,paint);
         // d.setBounds(d.getBounds().left,d.getBounds().top,oldRight,oldBottom);

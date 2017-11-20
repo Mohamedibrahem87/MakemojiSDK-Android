@@ -13,6 +13,12 @@ public interface IMojiTextWatcher {
     // modify the contents of the spanned if needed. return true if changes were made
     @CheckResult
     Spanned textAboutToChange(Spanned spanned);
+    IMojiTextWatcher NoChangeWatcher = new IMojiTextWatcher() {
+        @Override
+        public Spanned textAboutToChange(Spanned spanned) {
+            return spanned;
+        }
+    };
     IMojiTextWatcher BigThreeTextWatcher =  new IMojiTextWatcher() {
         @Override
         public Spanned textAboutToChange(Spanned spanned) {

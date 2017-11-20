@@ -6,6 +6,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
@@ -45,6 +47,8 @@ public class InputActivity extends AppCompatActivity{
     MojiEditText outsideMojiEdit;
     MojiInputLayout mojiInputLayout;
     boolean plainTextConversion = false;
+    RecyclerView rv;
+
 
     public static final String TAG = "InputActivity";
     @Override
@@ -66,22 +70,26 @@ public class InputActivity extends AppCompatActivity{
         },1000);
        // mojiInputLayout.showLeftNavigation(false);
     */
-        final MAdapter mAdapter = new MAdapter(this,new ArrayList<MojiMessage>(),true);
-        ListView lv = (ListView) findViewById(R.id.list_view);
+//        final MAdapter mAdapter = new MAdapter(this,new ArrayList<MojiMessage>(),true);
+//        ListView lv = (ListView) findViewById(R.id.list_view);
+//        lv.setAdapter(mAdapter);
+        rv = (RecyclerView)findViewById(R.id.recyclerView);
+        rv.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        final RvAdapter rvAdapter = new RvAdapter();
+        rv.setAdapter(rvAdapter);
         outsideMojiEdit = (MojiEditText) findViewById(R.id.outside_met);
-        lv.setAdapter(mAdapter);
         mojiInputLayout.setSendLayoutClickListener(new MojiInputLayout.SendClickListener() {
             @Override
             public boolean onClick(final String html, Spanned spanned) {
                 MojiMessage mojiMessage = new MojiMessage(html);
-                mAdapter.add(mojiMessage);
+                rvAdapter.addItem(mojiMessage);
 
                 if (plainTextConversion) {//not needed usually, only to facilitate sharing to 3rd party places legibly
                     String plainText = Moji.htmlToPlainText(html);
                     Log.d(TAG, "plain text " + plainText);//must convert to html to show new lines
                     MojiMessage message2 = new MojiMessage(null);
                     message2.plainText = plainText;
-                    mAdapter.add(message2);
+                    rvAdapter.addItem (message2);
                 }
 
                 return true;

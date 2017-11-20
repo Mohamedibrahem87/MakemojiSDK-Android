@@ -267,7 +267,7 @@ public class Moji {
     }
 
     public static IMojiTextWatcher getDefaultTextWatcher(){
-        return IMojiTextWatcher.BigThreeTextWatcher;
+        return IMojiTextWatcher.NoChangeWatcher;
     }
 
     /**
