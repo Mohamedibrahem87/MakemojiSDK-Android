@@ -544,7 +544,6 @@ public class Moji {
                 (long)tv.getTag(R.id._makemoji_last_invalidated_id);
         Long now = System.currentTimeMillis();
 
-        tv.setTag(R.id._makemoji_gif_invalidated_id,false);
         if (lastInvalidated+15>now) return;
 
         tv.invalidate();
@@ -554,6 +553,11 @@ public class Moji {
         }
         else if (tv.getTag(R.id._makemoji_request_layout_id)!=null)
             tv.requestLayout();
+        else if (Boolean.TRUE.equals(tv.getTag(R.id._makemoji_gif_invalidated_id)))
+        {
+            tv.requestLayout();
+            tv.setTag(R.id._makemoji_gif_invalidated_id,false);
+        }
         else if (tv instanceof EditText)
             tv.requestLayout();
 

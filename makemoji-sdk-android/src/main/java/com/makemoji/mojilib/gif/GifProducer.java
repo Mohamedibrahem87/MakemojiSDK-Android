@@ -183,7 +183,8 @@ public class GifProducer implements Runnable{
                 ListIterator<WeakReference<GifConsumer>> iterator = consumers.listIterator();
                 while (iterator.hasNext()) {
                     GifConsumer c = iterator.next().get();
-                    if (c == null) iterator.remove();
+                    if (c == null)
+                        iterator.remove();
                 }
             }
         } while (!consumers.isEmpty());
@@ -199,6 +200,12 @@ public class GifProducer implements Runnable{
         removeProducer(this);
     }
     public void subscribe(GifConsumer consumer){
+        for (WeakReference c : consumers){
+            if (consumer==c.get()) {
+             Log.d("duplicate","duplicate");
+                return;//duplicate
+            }
+        }
         synchronized (consumers) {
             consumers.add(new WeakReference<>(consumer));
         }
@@ -210,8 +217,10 @@ public class GifProducer implements Runnable{
         synchronized (consumers) {
             ListIterator<WeakReference<GifConsumer>> iterator = consumers.listIterator();
             while (iterator.hasNext()) {
-                if (consumer.equals(iterator.next().get()))
+                GifConsumer toRemove = iterator.next().get();
+                if (consumer==toRemove) {
                     iterator.remove();
+                }
 
             }
         }

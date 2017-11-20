@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.makemoji.mojilib.Moji;
@@ -36,6 +37,7 @@ public class GifSpan extends MojiSpan implements GifConsumer {
     static Paint gifPaint = new Paint();
     public static boolean USE_SMALL_GIFS = false;
     public boolean isSmallGif = USE_SMALL_GIFS;
+    String viewString;
     /**
      * @param d           The placeholder drawable.
      * @param source      URL of the actual emoji
@@ -57,15 +59,13 @@ public class GifSpan extends MojiSpan implements GifConsumer {
         mWidth = (int) (w * Moji.density *BASE_SIZE_MULT * mFontRatio);
         mHeight = (int) (h * Moji.density * BASE_SIZE_MULT * mFontRatio);
 
-        if (mHeight>210){
-            Log.d("trouble","trouble");
-        }
         mDrawable = d;
         mPlaceHolder = d;
         mSource = source;
         if (link!=null)mLink = link;
 
         mViewRef = new WeakReference<>(refreshView);
+        viewString = refreshView.toString();
         options = new BitmapFactory.Options();
         load();
 
@@ -148,8 +148,7 @@ public class GifSpan extends MojiSpan implements GifConsumer {
         else
             bitmapDrawable.setBounds(0,0,(int)(mWidth * sizeMultiplier),(int)(mHeight * sizeMultiplier));
         if (lastInvalidated+15>now) return;
-        Boolean gifInvalidated = (Boolean) v.getTag(R.id._makemoji_gif_invalidated_id);
-        if (gifInvalidated==null || !gifInvalidated) {
+
             v.setTag(R.id._makemoji_gif_invalidated_id,true);
             Moji.handler.post(new Runnable() {
                 @Override
@@ -157,19 +156,14 @@ public class GifSpan extends MojiSpan implements GifConsumer {
                     Moji.invalidateTextView(v);
                 }
             });
-        }
+
 //
     }
 
     @Override
     public void onStopped() {
-        Moji.handler.post(new Runnable() {
-            @Override
-            public void run() {
                 if (producer!=null)producer.unsubscribe(GifSpan.this);
                 producer = null;
-            }
-        });
     }
     @Override
     public void onStarted(GifProducer producer){
@@ -194,7 +188,7 @@ public class GifSpan extends MojiSpan implements GifConsumer {
             fm.top = fm.ascent;
             fm.bottom = 0;
         }
-        Log.i("gif span","gif span size "+ rect.right);
+        //Log.i("gif span","gif span size "+ rect.right);
 
         //return 100;
         return rect.right;
@@ -229,6 +223,7 @@ public class GifSpan extends MojiSpan implements GifConsumer {
 
     @Override
     public void onUnsubscribed(int actHash) {
+        View v = mViewRef.get();
         if (actHash==hostActHash) {
             if (producer != null) producer.unsubscribe(this);
             producer = null;
@@ -244,5 +239,10 @@ public class GifSpan extends MojiSpan implements GifConsumer {
     }
     @Override
     public void onPaused(){
+    }
+
+    @Override
+    public String toString() {
+        return viewString;
     }
 }
