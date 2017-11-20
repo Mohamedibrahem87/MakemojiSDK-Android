@@ -202,7 +202,7 @@ public class GifProducer implements Runnable{
     public void subscribe(GifConsumer consumer){
         for (WeakReference c : consumers){
             if (consumer==c.get()) {
-             Log.d("duplicate","duplicate");
+             //Log.d("duplicate","duplicate");
                 return;//duplicate
             }
         }
