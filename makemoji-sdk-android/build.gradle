@@ -21,7 +21,7 @@ ext {
     siteUrl = 'https://github.com/makemoji/MakemojiSDK-Android'
     gitUrl = 'https://github.com/makemoji/MakemojiSDK-Android.git'
 
-    libraryVersion = '0.9.821'
+    libraryVersion = '0.9.822'
     developerId = 'scottmoji'
     developerName = 'Scott Baar'
     developerEmail = 'scott@makemoji.com'
@@ -32,12 +32,12 @@ ext {
 }
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     buildToolsVersion '26.0.2'
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -55,17 +55,17 @@ android {
 }
 dependencies {
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:support-compat:25.4.0'
-    compile 'com.android.support:support-core-utils:25.4.0'
-    compile 'com.android.support:support-core-ui:25.4.0'
-    compile 'com.android.support:support-fragment:25.4.0'
-    compile 'com.android.support:appcompat-v7:25.4.0'
-    compile 'com.android.support:recyclerview-v7:25.4.0'
-    compile 'com.android.support:support-annotations:25.4.0'
-    compile 'com.android.support:design:25.4.0'
-    compile 'com.android.support:customtabs:25.4.0'
-    compile 'com.android.support:support-v13:25.4.0'
-    compile 'com.android.support:support-core-ui:25.4.0'
+    compile 'com.android.support:support-compat:27.0.2'
+    compile 'com.android.support:support-core-utils:27.0.2'
+    compile 'com.android.support:support-core-ui:27.0.2'
+    compile 'com.android.support:support-fragment:27.0.2'
+    compile 'com.android.support:appcompat-v7:27.0.2'
+    compile 'com.android.support:recyclerview-v7:27.0.2'
+    compile 'com.android.support:support-annotations:27.0.2'
+    compile 'com.android.support:design:27.0.2'
+    compile 'com.android.support:customtabs:27.0.2'
+    compile 'com.android.support:support-v13:27.0.2'
+    compile 'com.android.support:support-core-ui:27.0.2'
 
     compile 'com.romandanylyk:pageindicatorview:0.2.0@aar'
 
@@ -75,7 +75,7 @@ dependencies {
    // compile  'com.squareup.okhttp3:logging-interceptor:3.3.1'
     //compile 'com.githang:viewpagerindicator:2.4.2@aar'//not needed unless we want viewpagerpage back
 
-    androidTestCompile 'com.android.support:support-annotations:25.4.0'
+    androidTestCompile 'com.android.support:support-annotations:27.0.2'
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test:rules:0.5'
     androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
